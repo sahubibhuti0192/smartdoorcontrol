@@ -280,7 +280,7 @@
     }
 
     function sendCommand(command) {
-      fetch("https://54.252.36.84/send", {
+      fetch("https://13.54.53.222/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: command })
@@ -316,7 +316,7 @@
     }
 
     function checkServerStatus() {
-      fetch("https://54.252.36.84/status", { method: "GET" })
+      fetch("https://13.54.53.222/status", { method: "GET" })
         .then(res => {
           if (res.ok) {
             document.getElementById("serverStatus").innerText = "🟢 Server is ONLINE";
