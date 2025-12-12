@@ -280,7 +280,7 @@
     }
 
     function sendCommand(command) {
-      fetch("https://itspg6i73e.execute-api.ap-southeast-2.amazonaws.com/prod/send", {
+      fetch("https://itspg6i73e.execute-api.ap-southeast-2.amazonaws.com/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: command })
@@ -316,7 +316,7 @@
     }
 
     function checkServerStatus() {
-      fetch("https://itspg6i73e.execute-api.ap-southeast-2.amazonaws.com/prod/status", { method: "GET" })
+      fetch("https://itspg6i73e.execute-api.ap-southeast-2.amazonaws.com/status", { method: "GET" })
         .then(res => {
           if (res.ok) {
             document.getElementById("serverStatus").innerText = "🟢 Server is ONLINE";
