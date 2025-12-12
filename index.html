@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -243,7 +244,7 @@
   <p id="serverStatus">🟡 Checking server status...</p>
   <p id="response"></p>
 
-  
+  <audio id="doorSound" src="door-sound.mp3" preload="auto"></audio>
 
   <script>
     let doorOpen = false;
@@ -293,7 +294,7 @@
         const glow = document.getElementById("glow-behind");
         const room = document.getElementById("room-inside");
         const led = document.getElementById("lock-led");
-        
+        const doorSound = document.getElementById("doorSound");
 
         if (command === "ON") {
           door.classList.add("open");
