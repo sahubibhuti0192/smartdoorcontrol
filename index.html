@@ -350,6 +350,16 @@
     const data = await response.json();
 
     if (data.images && data.images.length > 0) {
+
+      // Sort by timestamp inside filename
+      data.images.sort((a, b) => {
+        const getTime = (url) => {
+          const name = url.split("image-")[1];
+          return parseInt(name);
+        };
+        return getTime(b.url) - getTime(a.url);
+      });
+
       document.getElementById("latestImage").src = data.images[0].url;
     }
   } catch (err) {
