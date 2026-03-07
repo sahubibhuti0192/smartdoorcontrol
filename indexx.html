@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Recognition</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+  video { border: 2px solid #333; border-radius: 8px; }
+  button { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Face Recognition Demo</h1>
+<video id="video" width="320" height="240" autoplay></video>
+<br>
+<button id="captureBtn">Capture & Recognize</button>
+<div id="result">Result: -</div>
+
+<script>
+// Access webcam
+const video = document.getElementById('video');
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => { video.srcObject = stream; })
+  .catch(err => { console.error('Error accessing webcam:', err); });
+
+// Capture image and send to server
+document.getElementById('captureBtn').addEventListener('click', async () => {
+  // Create a canvas to capture frame
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Convert to blob
+  canvas.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('file', blob, 'capture.jpg');
+
+    try {
+      const response = await fetch('http://15.135.215.113:8001/recognize', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      
+      if (data.status === 'MATCH') {
+        document.getElementById('result').innerText = `Recognized: ${data.person} (Confidence: ${data.confidence.toFixed(2)})`;
+      } else if (data.status === 'UNKNOWN') {
+        document.getElementById('result').innerText = `Face Unknown`;
+      } else if (data.status === 'NO_FACE') {
+        document.getElementById('result').innerText = `No Face Detected`;
+      }
+    } catch (err) {
+      console.error(err);
+      document.getElementById('result').innerText = 'Error connecting to server';
+    }
+  }, 'image/jpeg');
+});
+</script>
+
+</body>
+</html>
