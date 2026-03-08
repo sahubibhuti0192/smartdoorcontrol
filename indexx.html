@@ -41,7 +41,7 @@ document.getElementById('captureBtn').addEventListener('click', async () => {
     formData.append('file', blob, 'capture.jpg');
 
     try {
-      const response = await fetch('http://15.135.215.113:8001/recognize', {
+      const response = await fetch('https://licenseless-censurable-guy.ngrok-free.dev/recognize', {
         method: 'POST',
         body: formData
       });
